@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { auth, firestore } from '../../backend/config/firebase';
 
 const UserForm = () => {
+  const [name,setName] = useState('');
+  const [surname,setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
 
+  const handleNamechange = (e) => setName(e.target.value);
+  const handleSurnamechange =(e) => setSurname(e.target.value);
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handleRoleChange = (e) => setIsAdmin(e.target.checked);
@@ -23,6 +27,8 @@ const UserForm = () => {
       });
 
       // Réinitialiser les champs du formulaire
+      setName('');
+      setSurname('');
       setEmail('');
       setPassword('');
       setIsAdmin(false);
@@ -35,6 +41,14 @@ const UserForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <div>
+        <label>Name:</label>
+        <input type="name" value={name} onChange={handleNamechange} required />
+      </div>
+      <div>
+        <label>surName:</label>
+        <input type="surname" value={surname} onChange={handleSurnamechange} required />
+      </div>
       <div>
         <label>Email:</label>
         <input type="email" value={email} onChange={handleEmailChange} required />
