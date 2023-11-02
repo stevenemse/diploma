@@ -1,13 +1,16 @@
 import React, { useState,useEffect } from 'react';
-import { db } from '../../backend/config/firebase';
+import { db } from '../../config/firebase';
 import {collection,addDoc} from 'firebase/firestore';
 import { getAllUsers} from './getAllUsers'
+//import {GenerateId} from './generateId'
 
 const UserForm = () => {
   const [users,setUsers] = useState([]);
+  //const [usersId,setUsersId] = useState('');
   const [name,setName] = useState('');
   const [surname,setSurname] = useState('');
   const [email, setEmail] = useState('');
+  const [usersPhone,setUsersPhone] = useState('');
   const [password, setPassword] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -16,6 +19,9 @@ const UserForm = () => {
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handleRoleChange = (e) => setIsAdmin(e.target.checked);
+  const handleUsersPhoneChange = (e) => setUsersPhone(e.target.value);
+//  const handleUsersIdChange = (e) => setUsersId(e.target.value);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,32 +39,23 @@ const UserForm = () => {
         // Créer un nouvel utilisateur avec l'adresse e-mail et le mot de passe
         //const { user } = await auth.createUserWithEmailAndPassword(email, password);
         const information = await addDoc(collection(db,"users"),{
+  //        usersId: usersId,
           username: name+surname,
           name: name,
           surname:surname,
           email:email,
+          usersPhone: usersPhone,
           password:password,
           role:isAdmin
         })
         console.log("Document written with ID: ", information.id);
-        // Ajouter le rôle de l'utilisateur dans la base de données Firestore
-        /*await firestore.collection('users').doc(user.uid).set({
-          isAdmin,
-        });*/
-
-        // Réinitialiser les champs du formulaire
-        /*setName('');
-        setSurname('');
-        setEmail('');
-        setPassword('');
-        setIsAdmin(false);*/
 
         console.log('Utilisateur ajouté avec succès !');
       } catch (error) {
         console.error('Erreur lors de l\'ajout de l\'utilisateur', error);
       }
 
-    
+
     }
 
   };
@@ -82,6 +79,10 @@ const UserForm = () => {
       <div>
         <label>surName:</label>
         <input type="surname" value={surname} onChange={handleSurnamechange} required />
+      </div>
+      <div>
+        <label>Phone number</label>
+        <input type="text" value={usersPhone} onChange={handleUsersPhoneChange} required />
       </div>
       <div>
         <label>Email:</label>
