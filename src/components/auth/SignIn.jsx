@@ -2,8 +2,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../../backend/config/firebase";
 import '../../styles/SignIn.css';
-
-
 /*Transition entre SignIn et SignUp
 const signUpButton = document.getElementById('signUp');
 const signInButton = document.getElementById('signIn');
@@ -17,10 +15,12 @@ signInButton.addEventListener('click', () => {
 	container.classList.remove("right-panel-active");
 });
 */
+
+
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [errorMessage, setErrorMessage] = useState("");
   const signIn = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
@@ -28,6 +28,7 @@ const SignIn = () => {
         console.log(userCredential);
       })
       .catch((error) => {
+		setErrorMessage("Email ou mot de passe incorrect.");
         console.log(error);
       });
   };
@@ -51,8 +52,9 @@ const SignIn = () => {
           onChange={(e) => setEmail(e.target.value)} />
 			<input type="password" placeholder="Password" value={password}
           onChange={(e) => setPassword(e.target.value)} />
-			<a href="google.com">Forgot your password?</a>
+			<a href="#">Forgot your password?</a>
 			<button type="submit">Sign In</button>
+			{errorMessage && <p>{errorMessage}</p>}
 		</form>
 	</div>
 	<div class="overlay-container">
