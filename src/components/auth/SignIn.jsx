@@ -2,6 +2,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../../backend/config/firebase";
 import '../../styles/SignIn.css';
+import { useNavigate } from "react-router-dom";
 /*Transition entre SignIn et SignUp
 const signUpButton = document.getElementById('signUp');
 const signInButton = document.getElementById('signIn');
@@ -21,11 +22,16 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate()
+
   const signIn = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
+		navigate("/dashboard");
+		localStorage.setItem("auth","true");
+
       })
       .catch((error) => {
 		setErrorMessage("Email ou mot de passe incorrect.");
